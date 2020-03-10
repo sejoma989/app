@@ -19,12 +19,35 @@ app.get("/", function (req, res) {
 });
 
 
-// your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+// eg: https://curse-arrow.hyperdev.space/api/timestamp/2015-12-15
+// functions {"unix": <date.getTime()>, "utc" : <date.toUTCString()> }
+
+app.get("/api/timestamp", (req, res) => {
+  const date = new Date();
+  res.json({
+    unix: date.getTime(),
+    utc: date.toUTCString()
+  })
 });
 
-
+// your first API endpoint... 
+app.get("/api/timestamp/:date_str", function (req, res) {
+  const { date_str } = req.params;
+  
+  let date = new Date(date_str); 
+  
+  if(date === null) {
+    return res.json({
+      unix: null, 
+      utc : "Invalid Date" 
+    });
+  } else {
+    return res.json({
+      unix: date.getTime(),
+      utc: date.toUTCString()
+    })
+  }
+});
 
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
