@@ -23,23 +23,31 @@ app.get("/", function (req, res) {
 
 // your first API endpoint... 
 // Create the timestamp endpoint
-app.get("/api/timestamp/:date", function (req, res) {
-  
+app.get("/api/timestamp/:date_str", function (req, res) {
+	
+  // capturar parametro en url
   const { date_str } = req.params;
-  // convert the date
-  let date = new Date(date_str);
+  
+  let date;
+  
   // return when date invalid
-  if ( !date || date  ){
-    return res.status(400).json({
-      unix: null, utc:'Invalid Date'
+  if ( !date_str ){
+    date = new Date();
+    return res.json({
+      unix: null, 
+      utc:'Invalid Date'
     })
   }
   
-  res.json({
-    msg: 'hello api'
-  })
+  // convert the date
+  date = new Date(date_str);
   
-});
+  return res.json({
+    unix: date.getTime(), 
+  	utc : date.toUTCString() 
+	})
+  
+
 
 
 // listen for requests :)
