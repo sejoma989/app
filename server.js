@@ -18,9 +18,27 @@ app.get("/", function (req, res) {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+// example: https://curse-arrow.hyperdev.space/api/timestamp/2023-2-18
+// functions {"unix": <date.getTime()>, "utc" : <date.toUTCString()> }
+
 // your first API endpoint... 
-app.get("/api/hello", function (req, res) {
-  res.json({greeting: 'hello API'});
+// Create the timestamp endpoint
+app.get("/api/timestamp/:date", function (req, res) {
+  
+  const { date_str } = req.params;
+  // convert the date
+  let date = new Date(date_str);
+  // return when date invalid
+  if ( !date || date  ){
+    return res.status(400).json({
+      unix: null, utc:'Invalid Date'
+    })
+  }
+  
+  res.json({
+    msg: 'hello api'
+  })
+  
 });
 
 
